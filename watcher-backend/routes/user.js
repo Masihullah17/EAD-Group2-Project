@@ -72,7 +72,7 @@ app.post("/check-password", async (req, res, next) => {
 
 		var currentDate = new Date();
 		var allowed = attempts.blocked
-			? currentDate - attempts.blocktime > 86400000
+			? currentDate - attempts.blocktime > 43200000
 				? true
 				: false
 			: true;
@@ -86,7 +86,7 @@ app.post("/check-password", async (req, res, next) => {
 		} else if (!allowed) {
 			return res.status(200).json({
 				authorized: false,
-				msg: "User blocked for 24 hours.",
+				msg: "User blocked for 12 hours.",
 			});
 		} else {
 			if (attempts.wrong === 2) {
@@ -94,7 +94,7 @@ app.post("/check-password", async (req, res, next) => {
 				await userData.blockUser(bodyData.email, new Date());
 				return res.status(200).json({
 					authorized: false,
-					msg: "User blocked for 24 hours.",
+					msg: "User blocked for 12 hours.",
 				});
 			}
 
