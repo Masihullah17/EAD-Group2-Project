@@ -294,6 +294,39 @@ Site.prototype.request = async function (numRun, callback) {
 									elementChanged: true,
 									lastChecked: this.lastRun,
 								});
+
+								var user = await userData.get(this.username);
+
+								var rawBody = "Hello " + user.name + "," + "\n\n";
+								var htmlBody =
+									"<p><strong>Hello " +
+									user.name +
+									",</strong></p>";
+
+								rawBody +=
+									"Your website watch request for " +
+									this.url +
+									" has an update.\n\nGiven element " +
+									this.element +
+									" has changed.";
+								htmlBody +=
+									"<li>Your website watch request for <strong>" +
+									this.url +
+									"</strong> has an update.</li><br/><br/><li>Given element <strong>" +
+									this.element +
+									"</strong> has changed.</li>";
+
+								htmlBody += "</ul><p>Best<br />Watcher</p>";
+								rawBody += "\nBest\nWatcher";
+
+								var subject =
+									"Content Update on " + this.name + "!!";
+								this.mail.send(
+									rawBody,
+									htmlBody,
+									subject,
+									(s) => {}
+								);
 							} else {
 								stats.elementMatched = true;
 							}
@@ -372,6 +405,38 @@ Site.prototype.request = async function (numRun, callback) {
 									imageChanged: true,
 									lastChecked: this.lastRun,
 								});
+								var user = await userData.get(this.username);
+
+								var rawBody = "Hello " + user.name + "," + "\n\n";
+								var htmlBody =
+									"<p><strong>Hello " +
+									user.name +
+									",</strong></p>";
+
+								rawBody +=
+									"Your website watch request for " +
+									this.url +
+									" has an update.\n\nGiven image " +
+									this.imageChange +
+									" has changed.";
+								htmlBody +=
+									"<li>Your website watch request for <strong>" +
+									this.url +
+									"</strong> has an update.</li><br/><br/><li>Given imageChange <strong>" +
+									this.imageChange +
+									"</strong> has changed.</li>";
+
+								htmlBody += "</ul><p>Best<br />Watcher</p>";
+								rawBody += "\nBest\nWatcher";
+
+								var subject =
+									"Content Update on " + this.name + "!!";
+								this.mail.send(
+									rawBody,
+									htmlBody,
+									subject,
+									(s) => {}
+								);
 							}
 						}
 					}
