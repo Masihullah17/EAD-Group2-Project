@@ -68,19 +68,34 @@ app.post("/check-password", async (req, res, next) => {
 			bodyData.password
 		);
 
-		if (user.length > 0) {
+		const attempts = await userData.increaseWrongAttempt(bodyData.email);
+
+		var currentDate = new Date();
+		var allowed = attempts.blocked
+			? currentDate - attempts.blocktime > 86400000
+				? true
+				: false
+			: true;
+
+		if (user.length > 0 && allowed) {
 			await userData.resetWrongAttempt(bodyData.email);
 			next({ status: 200, message: bodyData.email + " Logged In!" });
 			return res
 				.status(200)
 				.json({ authorized: true, email: bodyData.email });
+		} else if (!allowed) {
+			return res.status(200).json({
+				authorized: false,
+				msg: "User blocked for 24 hours.",
+			});
 		} else {
-			const attempts = await userData.increaseWrongAttempt(
-				bodyData.email
-			);
-
-			if (attempts.wrong > 2) {
+			if (attempts.wrong === 2) {
 				//Send otp to email
+				await userData.blockUser(bodyData.email, new Date());
+				return res.status(200).json({
+					authorized: false,
+					msg: "User blocked for 24 hours.",
+				});
 			}
 
 			next({ status: 200, message: "Wrong Password!" });

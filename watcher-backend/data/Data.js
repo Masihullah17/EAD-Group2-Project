@@ -21,6 +21,13 @@ class UserData {
 		return this.model.find({ email: email, password: password });
 	}
 
+	blockUser(email, time) {
+		return this.model.findOneAndUpdate(
+			{ email: email },
+			{ blocktime: time, blocked: true }
+		);
+	}
+
 	changePassword(email, newPassword) {
 		return this.model.findOneAndUpdate(
 			{ email },

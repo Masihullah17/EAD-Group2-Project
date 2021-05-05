@@ -29,6 +29,8 @@ const UserData = new mongoose.Schema({
 	salt: { type: String, required: true },
 	password: { type: String, required: true },
 	wrong: { type: Number, default: 0 },
+	blocked: { type: Boolean, default: false },
+	blocktime: { type: Date, default: null },
 });
 
 // Schema for website details to be watched
