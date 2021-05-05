@@ -37,7 +37,7 @@ const headCells = [
 	{ id: "name", label: "Website Name" },
 	{ id: "url", label: "url Address" },
 	{ id: "content", label: "Selected Content for monitoring" },
-	{ id: "notify", label: "Notify" },
+	{ id: "notify", label: "Notify for change in" },
 	{ id: "actions", label: "Actions", disableSorting: true },
 ];
 

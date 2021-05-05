@@ -71,7 +71,7 @@ const Notifications = new mongoose.Schema(
 		uid: { type: String, required: true },
 		success: { type: Boolean, required: true },
 		seen: { type: Boolean, default: false },
-		message: { type: String, default: "" },
+		message: { type: String, default: "Queued for checking..." },
 		time: { type: Date, default: Date.now() },
 	},
 	{

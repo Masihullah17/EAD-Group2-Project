@@ -15,8 +15,6 @@ const user = require("./routes/user");
 app.use("/site", site);
 app.use("/user", user);
 
-console.log(process.env);
-
 // Logger Setup
 const winston = require("winston");
 require("winston-mongodb");

@@ -5,7 +5,7 @@ var http = require("http");
 var https = require("https");
 var Url = require("url");
 var nodeHtmlParser = require("node-html-parser");
-const { statusOfSites } = require("../data/Data");
+const { statusOfSites, userData } = require("../data/Data");
 var communications = require("./communication");
 var commsClass = communications.findByType("email");
 
@@ -19,6 +19,8 @@ function Site(config, id) {
 
 	//The name
 	this.name = config.name;
+
+	this.username = config.username;
 
 	//Url
 	this.url =
@@ -72,10 +74,10 @@ function Site(config, id) {
 		{ username: config.name },
 		{ type: "email", address: config.name },
 		{
-			sender: "no-reply@watcher.com",
-			service: "Gmail",
-			username: "some@gmail.com",
-			password: "password1234",
+			sender: process.env.SENDER,
+			service: process.env.SERVICE,
+			username: process.env.USERNAME,
+			password: process.env.PASSWORD,
 		}
 	);
 }
@@ -130,9 +132,6 @@ var fs = require("fs"),
 
 var download = async function (uri, filename, callback) {
 	request.head(uri, function (err, res, body) {
-		// console.log("content-type:", res.headers["content-type"]);
-		// console.log("content-length:", res.headers["content-length"]);
-
 		request(uri).pipe(fs.createWriteStream(filename)).on("close", callback);
 	});
 };
@@ -215,11 +214,46 @@ Site.prototype.request = async function (numRun, callback) {
 							stats.contentMatched = true;
 						} else {
 							stats.contentMatched = false;
+
 							await statusOfSites.update(this.uid, {
 								uid: this.uid,
 								contentChanged: true,
 								lastChecked: this.lastRun,
 							});
+
+							var user = await userData.get(this.username);
+
+							var rawBody = "Hello " + user.name + "," + "\n\n";
+							var htmlBody =
+								"<p><strong>Hello " +
+								user.name +
+								",</strong></p>";
+
+							rawBody +=
+								"Your website watch request for " +
+								this.url +
+								" has an update.\n\nGiven content " +
+								this.content +
+								" has changed.";
+							htmlBody +=
+								"<li>Your website watch request for <strong>" +
+								this.url +
+								"</strong> has an update.</li><br/><br/><li>Given content <strong>" +
+								this.content +
+								"</strong> has changed.</li>";
+
+							htmlBody += "</ul><p>Best<br />Watcher</p>";
+							rawBody += "\nBest\nWatcher";
+
+							var subject =
+								"Content Update on " + this.name + "!!";
+							this.mail.send(
+								rawBody,
+								htmlBody,
+								subject,
+								(s) => {}
+							);
+
 							stats.notes =
 								'The site content did not contain the string: "' +
 								this.content +

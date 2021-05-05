@@ -70,15 +70,13 @@ export default function EmployeeForm(props) {
 			});
 
 		if (validate()) {
-			addOrEdit(values, resetForm);
-			console.log(values);
-
 			var content = "";
 			var element = "";
 			var elementAttr = "";
 			var elementContent = "";
 			var elementChange = false;
 			var imageChange = "";
+			var uid = uuidv1();
 			if (values.notifyId === "1") {
 				content = values.content;
 			} else if (values.notifyId === "2") {
@@ -100,7 +98,7 @@ export default function EmployeeForm(props) {
 							method: "post",
 							url: "http://localhost:3000/site",
 							data: {
-								uid: uuidv1(),
+								uid: uid,
 								username: localStorage.getItem("email"),
 								name: values.Name,
 								url: values.url,
@@ -120,6 +118,9 @@ export default function EmployeeForm(props) {
 						alert(response.data.message);
 					}
 				});
+
+			values["uid"] = uid;
+			addOrEdit(values, resetForm);
 		}
 	};
 

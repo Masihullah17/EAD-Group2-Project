@@ -25,6 +25,22 @@ app.post("/get-all-sites", async (req, res, next) => {
 	}
 });
 
+// POST request for getting status of the watch requests raised by a user
+app.post("/get-status", async (req, res, next) => {
+	try {
+		const data = await dataRepo.notifications.findByUid(req.body.uid);
+
+		var msg = "Queued for checking...";
+		if (data.length > 0) {
+			msg = data.message;
+		}
+		return res.status(200).json(msg);
+	} catch (err) {
+		console.log(err);
+		next({ status: 400, message: "failed to get history" });
+	}
+});
+
 // POST request for counting the total number of submissions by a user or ip subnet per day
 app.post("/count-submissions", async (req, res, next) => {
 	try {
