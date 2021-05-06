@@ -116,7 +116,7 @@ We have decided to implement the security aspect of Enterprise Application Devel
     -   Build the backend for the form validation and submission
     -   Build the watch requests user dashboard UI using Reactjs
     -   Build the backend for dashboard reading data from the database and rendering on the UI
-    -   Helped for setting up the authentication backend
+    -   **EAD Feature**: Helped for setting up the authentication backend
 
 -   Brinda S
 
