@@ -64,17 +64,19 @@ BaseCommunication.prototype.send = function (
 	// send an e-mail
 
 	//Get the transport
+	console.log("Mail Sent to " + this.user.username + " for change detected.");
+	return;
 	var transport = nodemailer.createTransport("SMTP", {
-		service: this.baseConfig.email.service,
+		service: this.baseConfig.service,
 		auth: {
-			user: this.baseConfig.email.username,
-			pass: this.baseConfig.email.password,
+			user: this.baseConfig.username,
+			pass: this.baseConfig.password,
 		},
 	});
 
 	var mailOptions = {
 		transport: transport,
-		from: "Site Alert <" + this.baseConfig.email.sender + ">",
+		from: "Site Alert <" + this.baseConfig.sender + ">",
 		to: this.config.address,
 		subject: subject,
 		text: body,

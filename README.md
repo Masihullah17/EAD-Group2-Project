@@ -109,3 +109,19 @@ We have decided to implement the security aspect of Enterprise Application Devel
     -   **EAD Feature**: Setting up Winston for logging user credentials for security purposes
     -   **EAD Feature**: Setting up Winston-mongodb for connecting Winston to our database for storing the logs
     -   **EAD Feature**: Preventing Redirection DNS attacks
+
+-   Rishi Manudeep
+
+    -   Build the watch request form UI using Reactjs
+    -   Build the backend for the form validation and submission
+    -   Build the watch requests user dashboard UI using Reactjs
+    -   Build the backend for dashboard reading data from the database and rendering on the UI
+    -   Helped for setting up the authentication backend
+
+-   Brinda S
+
+    -   Build the UI for Authentication login and signup pages using Reactjs
+    -   Created animations for UI using Reactjs
+
+-   Kavya Nemmoju
+    -   Build the settings page UI and backend

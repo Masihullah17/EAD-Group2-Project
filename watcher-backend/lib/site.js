@@ -8,6 +8,7 @@ var nodeHtmlParser = require("node-html-parser");
 const { statusOfSites, userData } = require("../data/Data");
 var communications = require("./communication");
 var commsClass = communications.findByType("email");
+require("dotenv").config();
 
 function Site(config, id) {
 	events.EventEmitter.call(this);
@@ -71,8 +72,8 @@ function Site(config, id) {
 	this.previousDown = true;
 
 	this.mail = new commsClass(
-		{ username: config.name },
-		{ type: "email", address: config.name },
+		{ username: config.username },
+		{ type: "email", address: config.username },
 		{
 			sender: process.env.SENDER,
 			service: process.env.SERVICE,
@@ -156,6 +157,7 @@ Site.prototype.request = async function (numRun, callback) {
 		statusCode: null,
 		notes: "",
 		numRun: numRun,
+		done: false,
 	};
 
 	//Create the request
@@ -254,6 +256,8 @@ Site.prototype.request = async function (numRun, callback) {
 								(s) => {}
 							);
 
+							stats.done = true;
+
 							stats.notes =
 								'The site content did not contain the string: "' +
 								this.content +
@@ -297,7 +301,8 @@ Site.prototype.request = async function (numRun, callback) {
 
 								var user = await userData.get(this.username);
 
-								var rawBody = "Hello " + user.name + "," + "\n\n";
+								var rawBody =
+									"Hello " + user.name + "," + "\n\n";
 								var htmlBody =
 									"<p><strong>Hello " +
 									user.name +
@@ -327,6 +332,7 @@ Site.prototype.request = async function (numRun, callback) {
 									subject,
 									(s) => {}
 								);
+								stats.done = true;
 							} else {
 								stats.elementMatched = true;
 							}
@@ -407,7 +413,8 @@ Site.prototype.request = async function (numRun, callback) {
 								});
 								var user = await userData.get(this.username);
 
-								var rawBody = "Hello " + user.name + "," + "\n\n";
+								var rawBody =
+									"Hello " + user.name + "," + "\n\n";
 								var htmlBody =
 									"<p><strong>Hello " +
 									user.name +
@@ -437,6 +444,7 @@ Site.prototype.request = async function (numRun, callback) {
 									subject,
 									(s) => {}
 								);
+								stats.done = true;
 							}
 						}
 					}

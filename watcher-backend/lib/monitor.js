@@ -1,6 +1,6 @@
 var fs = require("fs");
 var util = require("./util");
-const { notifications, sites } = require("../data/Data");
+const { notifications, sites, statusOfSites } = require("../data/Data");
 var Site = require("./site");
 
 module.exports = async function () {
@@ -18,13 +18,24 @@ module.exports = async function () {
 	var runChecks = function (numRun) {
 		util.asyncForEach(
 			sitesToCheck,
-			function (site) {
+			async function (site) {
 				//Check the site requires a check
 				if (site.requiresCheck()) {
+					const status = await statusOfSites.findByUid(site.uid);
+					if (
+						status[0].contentChanged ||
+						status[0].elementChanged ||
+						status[0].imageChanged
+					)
+						return;
+
 					console.log("Watching: " + site.url);
+
 					site.check(numRun, async function (stats) {
 						//Up down
 						var up_down = false;
+
+						if (stats.done) return;
 
 						//Check for different situations
 						if (site.isDown() && !site.wasDown()) {
