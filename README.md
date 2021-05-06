@@ -10,6 +10,30 @@ Enterprise Application Development Course Project @IIITS
 -   Rishimanudeep | S20180010062
 -   Kavya Nemmoju | S20180010078
 
+## How to Run
+
+```
+Open Two terminals, let's say A & B
+
+In A:
+	cd watcher
+	npm install
+	npm start
+
+In B:
+	cd watcher-backend
+	touch .env
+	vim .env
+		MONGODB="URI"
+		SENDER="no-reply@watcher.com"
+		SERVICE="Gmail"
+		USERNAME="youremail@gmail.com"
+		PASSWORD="password"
+
+	npm install
+	npm start
+```
+
 ## Problem
 
 In this hustling times, we look for ways to save our time.
